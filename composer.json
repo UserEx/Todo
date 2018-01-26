@@ -1,0 +1,20 @@
+{
+	"require" : {
+		"doctrine/orm" : "^2.5",
+		"pimple/pimple" : "^3.2",
+		"symfony/yaml" : "3.4.x-dev",
+		"nette/http": "v2.4.x-dev",
+		"twig/twig": "^3.0@dev"
+	},
+	"name" : "UserEx/Todo",
+	"description" : "Test task",
+	"minimum-stability" : "dev",
+	"support" : {
+		"email" : "ildar2x6@gmail.com"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"UserEx\\Todo\\" : "app/"
+		}
+	}
+}

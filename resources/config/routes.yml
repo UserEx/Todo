@@ -1,0 +1,5 @@
+hello_wold:
+    path: /
+    controller: UserEx\Todo\Controllers\HelloWorldController
+    action: indexAction
+    method: GET
