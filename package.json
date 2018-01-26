@@ -1,0 +1,18 @@
+{
+  "name": "UserEx-Todo",
+  "version": "1.0.0",
+  "description": "Test task",
+  "author": "UserEx",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-exec": "^3.0.0"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jshint-stylish": "^2.2.1",
+    "requirejs": "^2.3.5",
+    "time-grunt": "^1.4.0"
+  }
+}

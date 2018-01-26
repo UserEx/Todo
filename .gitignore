@@ -1,1 +1,4 @@
 /vendor/
+/logs/
+/cache/
+/node_modules/

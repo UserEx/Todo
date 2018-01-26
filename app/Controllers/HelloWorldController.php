@@ -9,6 +9,6 @@ class HelloWorldController extends Controller
 {
     public function indexAction (Request $request)
     {   
-        return new Response('Hello, world!');
+        return new Response($this->view('hello_world.html.twig', array('msg' => 'Hello, world!!!')));
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce4467431261cc4e90977179487f7734",
+    "content-hash": "4b316336ff80bb2b92ca737505e30657",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1144,6 +1144,16 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2018-01-21T19:05:02+00:00"
+        },
+        {
+            "name": "tastejs/todomvc-app-template",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tastejs/todomvc-app-template.git",
+                "reference": "origin/master"
+            },
+            "type": "library"
         },
         {
             "name": "twig/twig",

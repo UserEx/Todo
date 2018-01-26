@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+	<h1 class="msg"></h1>
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+    	require(['jquery'], function($){
+    		var msg = '{{ msg }}';
+
+    		$('.msg').append(msg).append(' RequireJS is work!');
+    	});
+    </script>
+{% endblock %}

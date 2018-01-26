@@ -1,11 +1,4 @@
 {
-	"require" : {
-		"doctrine/orm" : "^2.5",
-		"pimple/pimple" : "^3.2",
-		"symfony/yaml" : "3.4.x-dev",
-		"nette/http": "v2.4.x-dev",
-		"twig/twig": "^3.0@dev"
-	},
 	"name" : "UserEx/Todo",
 	"description" : "Test task",
 	"minimum-stability" : "dev",
@@ -16,5 +9,27 @@
 		"psr-4" : {
 			"UserEx\\Todo\\" : "app/"
 		}
+	},
+	"repositories": {
+    	"todomvc-app-template": {
+	      	"type": "package",
+	      	"package": {
+	        	"name": "tastejs/todomvc-app-template", 
+	        	"version": "1.0",
+	        	"source": {
+	          		"url": "https://github.com/tastejs/todomvc-app-template.git",
+	          		"type": "git",
+	          		"reference": "origin/master"
+	        	}
+	      	}
+		}
+	},
+	"require" : {
+		"doctrine/orm" : "^2.5",
+		"pimple/pimple" : "^3.2",
+		"symfony/yaml" : "3.4.x-dev",
+		"nette/http" : "v2.4.x-dev",
+		"twig/twig" : "^3.0@dev",
+		"tastejs/todomvc-app-template": "^1.0"
 	}
 }

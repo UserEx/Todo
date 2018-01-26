@@ -14,8 +14,8 @@ class Kernel
     protected $configFile = __DIR__ . '/../../resources/config/config.yml';
     protected $routeFile =  __DIR__ . '/../../resources/config/routes.yml';
     protected $entitiesPath = __DIR__ . '/../Entities';
-    protected $twigTemplatePath = __DIR__ . '/../../resoures/views';
-    protected $twigCompilationCache = __DIR__ . 'cache/twig_compilation_cache';
+    protected $twigTemplatePath = __DIR__ . '/../../resources/views';
+    protected $twigCompilationCache = __DIR__ . '/../../cache/twig_compilation_cache';
     
     public function __construct() {
         $this->container = new Container();
@@ -50,6 +50,7 @@ class Kernel
             $loader = new \Twig_Loader_Filesystem($this->twigTemplatePath);
             $twig = new \Twig_Environment($loader, array(
                 'cache' => $this->twigCompilationCache,
+                'auto_reload' => true,
             ));
 
             return $twig;
