@@ -1,4 +1,5 @@
 host: todo.local
+auth_token_life_time: 90000
 
 database:
     driver:   pdo_mysql

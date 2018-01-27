@@ -6,26 +6,27 @@
 {% endblock %}
 
 {% block content %}
-	<form action="{{ path('sign_up') }}" class="simple" method="post">
+	<form action="{{ path('sign_in') }}" class="simple" method="post">
 		<input type="text" name="username" class="simple" placeholder="Your name">
 		<input type="password" name="password" class="simple" placeholder="Password">
-		<input type="password" name="repeat" class="simple" placeholder="Repeat password">
-		<button type="submit" class="simple-btn">Sign up</button>
+
+		<button type="submit" class="simple-btn">Sign in</button>
 	</form>
 	<ul class="valid-msg">
-			{% for msg in messages %}
-				<li>
-					{{ msg }}
-				</li>
-			{% endfor %}
-		</ul>
-	<footer class="footer">
+		{% for msg in messages %}
+			<li>
+				{{ msg }}
+			</li>
+		{% endfor %}
+	</ul>
+	<footer class="footer">	
 		<ul class="filters">
 			<li>
-				<a href="{{ path('login') }}">sign in</a>
+				<a href="{{ path('registration') }}">sign up</a>
 			</li>
-		</ul>			
-	</footer>
+		</ul>
+				
+	</footer>		
 {% endblock %}
 
 {% block js %}

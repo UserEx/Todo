@@ -13,4 +13,4 @@ $requestFactory = new RequestFactory();
 $request = $requestFactory->createHttpRequest();
 
 $kernel = new Kernel();
-$kernel->handler($request);
+$kernel->handle($request);

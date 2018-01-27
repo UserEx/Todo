@@ -15,3 +15,21 @@ sign_up:
     controller: UserEx\Todo\Controllers\UserRegistrationController
     action: signUpAction
     method: POST
+    
+login:
+    path: /login
+    controller: UserEx\Todo\Controllers\LoginController
+    action: indexAction
+    method: GET
+    
+sign_in:
+    path: /sign_in
+    controller: UserEx\Todo\Controllers\LoginController
+    action: signInAction
+    method: POST
+    
+logout:
+    path: /logout
+    controller: UserEx\Todo\Controllers\LoginController
+    action: logoutAction
+    method: GET

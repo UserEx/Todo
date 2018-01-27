@@ -23,7 +23,7 @@ class AuthToken
     /**
      * @var string
      *
-     * @ORM\Column(name="token", type="string", length=20, nullable=true)
+     * @ORM\Column(name="token", type="string", length=32, nullable=true)
      */
     private $token = null;
     

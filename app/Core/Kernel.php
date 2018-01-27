@@ -29,7 +29,7 @@ class Kernel
         $this->registryORMService();
         $this->registryTemplateEngine();
         $this->registryTemplateEngineExtension();
-        
+        $this->registryAuthenticationService();
     }
     
     protected function loadConfig()
@@ -37,6 +37,8 @@ class Kernel
         $this->container['config'] = Yaml::parseFile($this->configFile);
         $this->container['routes'] = Yaml::parseFile($this->routeFile);
         $this->container['entities_path'] = array($this->entitiesPath);
+        
+        $this->container['user'] = null;
     }
     
     protected function registryORMService()
@@ -92,33 +94,35 @@ class Kernel
     protected function registryRouter()
     {
         $this->container['router'] = function ($c) {
-            return new Router($this->container);
+            return new Router($c);
         };
     }
     
     protected function registryAuthenticationService()
     {
-        
+        $this->container['authservice'] = function ($c) {
+            return new AuthentificationService($c);
+        };
     }
-    
-    protected function registryAuthorizationService()
-    {
         
-    }
     
-    protected function registry()
+    public function handle(IRequest $request)
     {
+        if ($token = $request->getCookie('auth')) {
+            $auth = $this->container['authservice'];
+            if ($auth->checkToken($token)) {
+                $this->container['user'] = $auth->getUser($token);
+            }
+        }
         
-    }
-    
-    
-    public function handler(IRequest $request)
-    {
         /* @var $router Router */
         $router = $this->container['router'];
         list($controller, $action) = $router->getController($request);
         
-        var_dump($request->getUrl()->getPath());
+//         $auth = $this->container['authservice'];
+//         $auth->logout($request);
+//         var_dump($action);
+//         echo get_class($controller);
         
         $response = $controller->$action($request);
         

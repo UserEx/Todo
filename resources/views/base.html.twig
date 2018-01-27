@@ -21,7 +21,12 @@
         {% endblock %}
 	</head>
 	<body>
-		{% block content %}		{% endblock %}
+		<section class="todoapp">
+    		<header style="text-align: center;">
+        		<h1>todos</h1>
+        	</header>	
+    		{% block content %}		{% endblock %}
+		</section>
 		<footer class="info">
 			{% block footer %}
     			<p>Double-click to edit a todo</p>

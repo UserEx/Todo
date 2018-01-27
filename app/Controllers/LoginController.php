@@ -5,23 +5,33 @@ use UserEx\Todo\Core\Controller;
 use Nette\Http\Request;
 use UserEx\Todo\Core\Response;
 use Doctrine\ORM\EntityManager;
-use UserEx\Todo\Entities\User;
+use Doctrine\ORM\EntityRepository;
 use UserEx\Todo\Core\RedirectResponse;
 
-class UserRegistrationController extends Controller
+class LoginController extends Controller
 {
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\Response
+     */
     public function indexAction (Request $request)
-    {
+    {   
         $router = $this->container['router'];
         
         if ($this->container['user']) {
             return new RedirectResponse($router->getUrl('hello_wold'));
         }
         
-        return new Response($this->view('registration.html.twig', array()));
+        return new Response($this->view('login.html.twig', array()));
     }
     
-    public function signUpAction (Request $request)
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\Response
+     */
+    public function signInAction(Request $request)
     {
         $router = $this->container['router'];
         
@@ -31,7 +41,6 @@ class UserRegistrationController extends Controller
         
         $username = $request->getPost('username', null);
         $password = $request->getPost('password', null);
-        $repeat   = $request->getPost('repeat', null);
         
         $username = trim($username);
         
@@ -41,41 +50,35 @@ class UserRegistrationController extends Controller
         }
         
         if (!strlen($password)) {
-            $validMsg[] = 'Пароль не может быть пустым';   
+            $validMsg[] = 'Пароль не может быть пустым';
         }
-        
-        if ($password != $repeat) {
-            $validMsg[] = 'Введенные пароли не воспадают';
-        }
-        
-        /** @var $em EntityManager */
-        $em = $this->container['em'];
-        $repository = $em->getRepository('UserEx\Todo\Entities\User');
-        
+                
         $response = null;
         
-        if (!$validMsg) {
-            $users = $repository->findBy(array('name' => $username));
-            if ($users) {
-                $validMsg[] = 'Пользователь с таким именем уже зарегистрирован';
-            } else {
-                $user = new User();
-                $user->setName($username)
-                    ->setPassword($password);
-                
-                $em->persist($user);
-                $em->flush();
-                
+        if (!$validMsg) {            
+            /** @var $auth \UserEx\Todo\Core\AuthentificationService */
+            $auth = $this->container['authservice'];
+            
+            if (!$auth->login($username, $password)) {
+                $validMsg[] = 'Неверное имя или пароль';
+            } else {                
                 $response = new RedirectResponse($router->getUrl('hello_wold'));
             }
-        }        
+        }
         
         if (!$response) {
-            $response = new Response($this->view('registration.html.twig', array('messages' => $validMsg)));
+            $response = new Response($this->view('login.html.twig', array('messages' => $validMsg)));
         }
         
         return $response;
     }
     
-    
+    public function logoutAction(Request $request) {
+        /** @var $auth \UserEx\Todo\Core\AuthentificationService */
+        $auth = $this->container['authservice'];
+        
+        $auth->logout($request);
+        
+        return new RedirectResponse($this->container['router']->getUrl('login'));
+    }
 }
