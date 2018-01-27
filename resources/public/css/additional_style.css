@@ -1,0 +1,31 @@
+
+.text-center {
+	text-align: center;
+}
+
+form.simple {
+	padding: 40px 40px 0px 40px;
+}
+
+input.simple {
+	width: 400px;
+    font-size: 24px;
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+}
+
+button.simple-btn {
+	display: block;
+	width: 200px;
+    font-size: 18px;
+	margin: 20px auto;
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+ul.valid-msg {
+	padding: 3px 90px;
+	color: red;
+	
+}

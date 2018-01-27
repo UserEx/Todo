@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block css %}
+	{{ parent() }}
+	<link rel="stylesheet" href="css/additional_style.css">
+{% endblock %}
+
+{% block content %}
+	<section class="todoapp">
+		<header style="text-align: center;">
+    		<h1>Sign Up</h1>
+    	</header>
+		<form action="{{ path('sign_up') }}" class="simple" method="post">
+			<input type="text" name="username" class="simple" placeholder="Your name">
+			<input type="password" name="password" class="simple" placeholder="Password">
+			<input type="password" name="repeat" class="simple" placeholder="Repeat password">
+			<button type="submit" class="simple-btn">Sign up</button>
+		</form>
+		<ul class="valid-msg">
+				{% for msg in messages %}
+    				<li>
+    					{{ msg }}
+    				</li>
+				{% endfor %}
+			</ul>
+		<footer class="footer">			
+		</footer>
+	</section>
+		
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+    	require(['jquery'], function($){
+			
+    	});
+    </script>
+{% endblock %}

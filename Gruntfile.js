@@ -43,7 +43,13 @@ module.exports = function(grunt) {
                   cwd: 'vendor/tastejs/todomvc-app-template/node_modules/todomvc-app-css/',
                   src: ['index.css'],
                   dest: '<%= config.css %>'
-        	  }]
+        	  },{
+        		  expand: true,
+                  cwd: 'resources/public/css/',
+                  src: ['*.css'],
+                  dest: '<%= config.css %>'
+        	  }
+        	  ]
           }	
       },
       exec: {

@@ -3,3 +3,15 @@ hello_wold:
     controller: UserEx\Todo\Controllers\HelloWorldController
     action: indexAction
     method: GET
+    
+registration:
+    path: /registration
+    controller: UserEx\Todo\Controllers\UserRegistrationController
+    action: indexAction
+    method: GET
+    
+sign_up:
+    path: /sign_up
+    controller: UserEx\Todo\Controllers\UserRegistrationController
+    action: signUpAction
+    method: POST

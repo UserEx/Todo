@@ -1,5 +1,5 @@
 {
-	"name" : "UserEx/Todo",
+	"name" : "userex/todo",
 	"description" : "Test task",
 	"minimum-stability" : "dev",
 	"support" : {

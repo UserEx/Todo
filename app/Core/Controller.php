@@ -14,5 +14,5 @@ class Controller
     protected function view(string $temlate, array $params) 
     {        
         return $this->container['twig']->render($temlate, $params); 
-    }   
+    }
 }

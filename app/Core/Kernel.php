@@ -6,6 +6,10 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Nette\Http\IRequest;
+use \Doctrine\ORM\Configuration;
+use Doctrine\ORM\Proxy\ProxyFactory;
+use UserEx\Todo\Core\TwigExtensions\RouterTwigExtension;
+
 
 class Kernel
 {
@@ -13,7 +17,7 @@ class Kernel
     
     protected $configFile = __DIR__ . '/../../resources/config/config.yml';
     protected $routeFile =  __DIR__ . '/../../resources/config/routes.yml';
-    protected $entitiesPath = __DIR__ . '/../Entities';
+    protected $entitiesPath = __DIR__ . '/../Entities/';
     protected $twigTemplatePath = __DIR__ . '/../../resources/views';
     protected $twigCompilationCache = __DIR__ . '/../../cache/twig_compilation_cache';
     
@@ -24,6 +28,7 @@ class Kernel
         $this->registryRouter();
         $this->registryORMService();
         $this->registryTemplateEngine();
+        $this->registryTemplateEngineExtension();
         
     }
     
@@ -31,13 +36,34 @@ class Kernel
     {
         $this->container['config'] = Yaml::parseFile($this->configFile);
         $this->container['routes'] = Yaml::parseFile($this->routeFile);
-        $this->container['entities_path'] = $this->entitiesPath;
+        $this->container['entities_path'] = array($this->entitiesPath);
     }
     
     protected function registryORMService()
     {
         $this->container['em'] = function ($c) {
-            $config = Setup::createAnnotationMetadataConfiguration($c['entities_path'], false);
+            
+            $applicationMode = 'development';
+            
+            if ($applicationMode == "development") {
+                $cache = new \Doctrine\Common\Cache\ArrayCache;
+            } else {
+                $cache = new \Doctrine\Common\Cache\ApcCache;
+            }
+            
+            $config = new Configuration;
+            $config->setMetadataCacheImpl($cache);
+            $driverImpl = $config->newDefaultAnnotationDriver($c['entities_path'], false);
+            $config->setMetadataDriverImpl($driverImpl);
+            $config->setQueryCacheImpl($cache);
+            $config->setProxyDir(__DIR__ . '/../Proxies');
+            $config->setProxyNamespace('UserEx\Todo\Proxies');
+            $config->setAutoGenerateProxyClasses($applicationMode === 'development');
+            
+            if ('development' === $applicationMode) {
+                $config->setAutoGenerateProxyClasses(ProxyFactory::AUTOGENERATE_EVAL);
+            }
+            
             $entityManager = EntityManager::create($c['config']['database'], $config);
             
             return $entityManager;
@@ -55,6 +81,12 @@ class Kernel
 
             return $twig;
         };
+    }
+    
+    protected function registryTemplateEngineExtension() {
+        $this->container['twig']->addExtension(
+            new RouterTwigExtension($this->container)    
+        );
     }
     
     protected function registryRouter()
@@ -86,8 +118,15 @@ class Kernel
         $router = $this->container['router'];
         list($controller, $action) = $router->getController($request);
         
+        var_dump($request->getUrl()->getPath());
+        
         $response = $controller->$action($request);
         
         $response->send();
+    }
+    
+    public function getContainer()
+    {
+        return $this->container;
     }
 }
