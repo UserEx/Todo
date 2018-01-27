@@ -115,6 +115,8 @@ class Kernel
             }
         }
         
+        $this->container['twig']->addGlobal('user', $this->container['user']);
+        
         /* @var $router Router */
         $router = $this->container['router'];
         list($controller, $action) = $router->getController($request);

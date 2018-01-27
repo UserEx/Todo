@@ -66,6 +66,10 @@ class UserRegistrationController extends Controller
                 $em->persist($user);
                 $em->flush();
                 
+                /** @var $auth \UserEx\Todo\Core\AuthentificationService */
+                $auth = $this->container['authservice'];
+                $auth->login($username, $password);
+                
                 $response = new RedirectResponse($router->getUrl('hello_wold'));
             }
         }        
