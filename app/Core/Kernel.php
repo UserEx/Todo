@@ -9,6 +9,7 @@ use Nette\Http\IRequest;
 use \Doctrine\ORM\Configuration;
 use Doctrine\ORM\Proxy\ProxyFactory;
 use UserEx\Todo\Core\TwigExtensions\RouterTwigExtension;
+use UserEx\Todo\Core\Exceptions\NotFoundException;
 
 /**
  * @author ildar
@@ -174,7 +175,19 @@ class Kernel
         
         list($controller, $action) = $router->getController($request);
         
-        $response = $controller->$action($request);
+        try {
+            if (class_exists($controller, fasle) && method_exists($controller, $action)) {
+                $controller = new $controller($this->container);    
+                $response = $controller->$action($request);
+            } else {
+                throw new NotFoundException();
+            }
+        } catch (NotFoundException $e) {
+            $response = new Response(
+                $this->container['twig']->render('ExceptionTemplates/404_not_found.html.twig', array()),
+                Response::S404_NOT_FOUND
+            );            
+        }
         
         $response->send();
     }

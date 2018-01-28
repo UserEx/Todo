@@ -37,7 +37,7 @@ class Router
             if ($request->getUrl()->getPath() == $route['path'] && 
                 $request->getMethod() == $route['method']) {
                 
-                $controller = new $route['controller']($this->container);
+                $controller = $route['controller'];
                 $action = $route['action'];
             }
         }
