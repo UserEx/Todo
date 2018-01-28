@@ -14,17 +14,31 @@ class TodoRepository extends EntityRepository
         $this->getEntityManager()->flush();
     }
     
-    public function delete($id)
-    {
-        $todo = $this->find($id);
-        if ($todo) {
-            $this->getEntityManager()->remove($todo);
-            $this->getEntityManager()->flush();
-        }
-    }
-    
     public function getTodoList(User $user) 
     {
         return $this->findBy(array('user' => $user));
+    }
+    
+    public function toggleAllTodo(User $user, $completed)
+    {
+        $todoList = $this->getTodoList($user);
+        
+        foreach ($todoList as $todo) {
+            $todo->setCompleted($completed);
+        }
+        $this->getEntityManager()->flush();
+    }
+    
+    public function deleteCompleted(User $user)
+    {
+        $todos = $this->findBy(array('user' => $user, 'completed' => true));
+        
+        $em = $this->getEntityManager();
+        
+        foreach ($todos as $todo) {
+            $em->remove($todo);
+        }
+        
+        $em->flush();
     }
 }

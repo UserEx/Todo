@@ -30,7 +30,28 @@ todo_load_list:
     action: getListAction
     method: POST
     expose: true
+
+todo_toggle:
+    path: /ajax/toggle
+    controller: UserEx\Todo\Controllers\TodoController
+    action: toggleAction
+    method: POST
+    expose: true
     
+todo_toggle_all:
+    path: /ajax/toggle_all
+    controller: UserEx\Todo\Controllers\TodoController
+    action: toggleAllTodoAction
+    method: POST
+    expose: true
+
+todo_delete_completed:
+    path: /ajax/delete_completed
+    controller: UserEx\Todo\Controllers\TodoController
+    action: deleteCompletedAction
+    method: POST
+    expose: true
+        
 registration:
     path: /registration
     controller: UserEx\Todo\Controllers\UserRegistrationController

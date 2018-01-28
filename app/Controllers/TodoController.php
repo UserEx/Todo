@@ -71,13 +71,20 @@ class TodoController extends Controller
         
         $todoId = $request->getPost('todo_id');
         
-        if (!$todoId) {
+        if (is_null($todoId)) {
             return new JsonResponse(array('msg' => 'require todo_id'), Response::S400_BAD_REQUEST);
         }
         
-        $this->container['em']
+        $todo = $this->container['em']
             ->getRepository('UserEx\Todo\Entities\Todo')
-            ->delete($todoId);
+            ->findOneBy(array('id' => $todoId, 'user' => $user));
+        
+        if (!$todo) {
+            return new JsonResponse(array('msg' => 'Not found'), Response::S404_NOT_FOUND);
+        }
+        
+        $this->container['em']->remove($todo);
+        $this->container['em']->flush();
         
         return new JsonResponse(array(
             'status' => 'OK',
@@ -107,12 +114,63 @@ class TodoController extends Controller
         ));
     }
     
-    public function setComplited(Request $request)
+    public function toggleAction(Request $request)
     {
         if (!$user = $this->container['user']) {
             return new JsonResponse(array('msg' => 'Unauthorized'), Response::S401_UNAUTHORIZED);
         }
         
+        $todoId = $request->getPost('todo_id');
+        $completed = $request->getPost('completed');
         
+        if (is_null($todoId) || is_null($completed) || !in_array($completed, array('true', 'false'))) {
+            return new JsonResponse(array('msg' => 'require todo_id and completed'), Response::S400_BAD_REQUEST);
+        }
+        
+        $repositopry = $this->container['em']
+            ->getRepository('UserEx\Todo\Entities\Todo');
+        
+        /** @var $todo Todo */
+        $todo = $repositopry->find($todoId);
+        if (!$todo || $todo->getUser() != $user) {
+            return new JsonResponse(array('msg' => 'Not found'), Response::S404_NOT_FOUND);
+        }
+        
+        $todo->setCompleted($completed == 'true');
+        $this->container['em']->flush();
+        
+        return new JsonResponse(array('status' => 'OK', 'code' => 200));
+    }
+    
+    public function toggleAllTodoAction(Request $request)
+    {
+        if (!$user = $this->container['user']) {
+            return new JsonResponse(array('msg' => 'Unauthorized'), Response::S401_UNAUTHORIZED);
+        }
+        
+        $completed = $request->getPost('completed');
+        
+        if (is_null($completed) || !in_array($completed, array('true', 'false'))) {
+            return new JsonResponse(array('msg' => 'require completed'), Response::S400_BAD_REQUEST);
+        }
+        
+        $this->container['em']
+            ->getRepository('UserEx\Todo\Entities\Todo')
+            ->toggleAllTodo($user, $completed == 'true');
+        
+        return new JsonResponse(array('status' => 'OK', 'code' => 200));
+    }
+    
+    public function deleteCompletedAction(Request $request)
+    {
+        if (!$user = $this->container['user']) {
+            return new JsonResponse(array('msg' => 'Unauthorized'), Response::S401_UNAUTHORIZED);
+        }
+        
+        $this->container['em']
+            ->getRepository('UserEx\Todo\Entities\Todo')
+            ->deleteCompleted($user);
+        
+        return new JsonResponse(array('status' => 'OK', 'code' => 200));
     }
 }
