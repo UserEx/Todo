@@ -44,6 +44,10 @@ require(['jquery'], function($){
 					todos.updateToggleAllCheckbox();
 				})
 			})
+			
+			$(window).on('hashchange',function(e){ 
+				todos.applyFilters();
+			});
  		},
 		
 		add: function (id, title, completed) {
@@ -146,10 +150,36 @@ require(['jquery'], function($){
 			if (lengthList > 0) {
 				var checked = lengthList == $('.todo-list li.completed').length;
 				$('.toggle-all').prop('checked', checked);
-				$('.toggle-all, [for="toggle-all"]').show()
+				$('.toggle-all, [for="toggle-all"], .footer').show()
 			} else {
-				$('.toggle-all, [for="toggle-all"]').hide();
+				$('.toggle-all, [for="toggle-all"], .footer').hide();
 			}
+			
+			count = $('.todo-list li:not(li.completed)').length;
+			$('.todo-count strong').html(count);
+			todos.applyFilters();
+		},
+		
+		applyFilters: function () {
+			$('.filters a.selected').removeClass('selected');
+		    switch (location.hash.slice(1)) {
+		    	case '/':	
+		    		$('.todo-list li').show();
+		    		$('.filters a[href="#/"]').addClass('selected');
+		    		break;
+		    		
+		    	case '/active':
+		    		$('.todo-list li:not(li.completed)').show();
+		    		$('.todo-list li.completed').hide();
+		    		$('.filters a[href="#/active"]').addClass('selected');
+		    		break;
+		    	
+		    	case '/completed':
+		    		$('.todo-list li:not(li.completed)').hide();
+		    		$('.todo-list li.completed').show();
+		    		$('.filters a[href="#/completed"]').addClass('selected');
+		    		break;
+		    }
 		},
 		
 		removeCompleted: function (callback) {
@@ -163,8 +193,7 @@ require(['jquery'], function($){
 			    	}
 			    }
 			});
-		}
-		
+		},		
 	};
 	todos.init();
 	
