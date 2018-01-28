@@ -147,6 +147,11 @@ class User
         return $this;
     }
     
+    /**
+     * @param string $password
+     * 
+     * @return boolean
+     */
     public function checkPassword($password)
     {
         return $this->pwdhash === sha1(sha1($password) . $this->getSalt());

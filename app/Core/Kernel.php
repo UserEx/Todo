@@ -10,28 +10,59 @@ use \Doctrine\ORM\Configuration;
 use Doctrine\ORM\Proxy\ProxyFactory;
 use UserEx\Todo\Core\TwigExtensions\RouterTwigExtension;
 
-
+/**
+ * @author ildar
+ */
 class Kernel
 {
+    /**
+     * @var string
+     */
     protected $container = null;
     
+    /**
+     * @var string
+     */
     protected $configFile = __DIR__ . '/../../resources/config/config.yml';
+
+    /**
+     * @var string
+     */
     protected $routeFile =  __DIR__ . '/../../resources/config/routes.yml';
+    
+    /**
+     * @var string
+     */
     protected $entitiesPath = __DIR__ . '/../Entities/';
+    
+    /**
+     * @var string
+     */
     protected $twigTemplatePath = __DIR__ . '/../../resources/views';
+    
+    /**
+     * @var string
+     */
     protected $twigCompilationCache = __DIR__ . '/../../cache/twig_compilation_cache';
     
+    
+    /**
+     * kernel constructor
+     */
     public function __construct() {
         $this->container = new Container();
         
         $this->loadConfig();
-        $this->registryRouter();
-        $this->registryORMService();
-        $this->registryTemplateEngine();
-        $this->registryTemplateEngineExtension();
-        $this->registryAuthenticationService();
+        $this->registerRouter();
+        $this->registerORMService();
+        $this->registerTemplateEngine();
+        $this->registerTemplateEngineExtension();
+        $this->registerAuthenticationService();
     }
     
+    /**
+     * Load configuration
+     */
     protected function loadConfig()
     {
         $this->container['config'] = Yaml::parseFile($this->configFile);
@@ -41,7 +72,10 @@ class Kernel
         $this->container['user'] = null;
     }
     
-    protected function registryORMService()
+    /**
+     * register ORM
+     */
+    protected function registerORMService()
     {
         $this->container['em'] = function ($c) {
             
@@ -72,7 +106,10 @@ class Kernel
         };
     }
     
-    protected function registryTemplateEngine()
+    /**
+     * register twig
+     */
+    protected function registerTemplateEngine()
     {
         $this->container['twig'] = function ($c) {
             $loader = new \Twig_Loader_Filesystem($this->twigTemplatePath);
@@ -85,27 +122,40 @@ class Kernel
         };
     }
     
-    protected function registryTemplateEngineExtension() {
+    /**
+     * register twig extension
+     */
+    protected function registerTemplateEngineExtension() {
         $this->container['twig']->addExtension(
             new RouterTwigExtension($this->container)    
         );
     }
     
-    protected function registryRouter()
+    /**
+     * register router
+     */
+    protected function registerRouter()
     {
         $this->container['router'] = function ($c) {
             return new Router($c);
         };
     }
     
-    protected function registryAuthenticationService()
+    /**
+     * register AuthenticationService
+     */
+    protected function registerAuthenticationService()
     {
         $this->container['authservice'] = function ($c) {
             return new AuthentificationService($c);
         };
     }
         
-    
+    /**
+     * handler http request
+     * 
+     * @param IRequest $request
+     */
     public function handle(IRequest $request)
     {
         if ($token = $request->getCookie('auth')) {
@@ -124,16 +174,14 @@ class Kernel
         
         list($controller, $action) = $router->getController($request);
         
-//         $auth = $this->container['authservice'];
-//         $auth->logout($request);
-//         var_dump($action);
-//         echo get_class($controller);
-        
         $response = $controller->$action($request);
         
         $response->send();
     }
     
+    /**
+     * @return string
+     */
     public function getContainer()
     {
         return $this->container;

@@ -92,6 +92,11 @@ class TodoController extends Controller
         ));
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\JsonResponse
+     */
     public function getListAction(Request $request) {
         if (!$user = $this->container['user']) {
             return new JsonResponse(array('msg' => 'Unauthorized'), Response::S401_UNAUTHORIZED);
@@ -114,6 +119,11 @@ class TodoController extends Controller
         ));
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\JsonResponse
+     */
     public function toggleAction(Request $request)
     {
         if (!$user = $this->container['user']) {
@@ -142,6 +152,11 @@ class TodoController extends Controller
         return new JsonResponse(array('status' => 'OK', 'code' => 200));
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\JsonResponse
+     */
     public function toggleAllTodoAction(Request $request)
     {
         if (!$user = $this->container['user']) {
@@ -161,6 +176,11 @@ class TodoController extends Controller
         return new JsonResponse(array('status' => 'OK', 'code' => 200));
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\JsonResponse
+     */
     public function deleteCompletedAction(Request $request)
     {
         if (!$user = $this->container['user']) {

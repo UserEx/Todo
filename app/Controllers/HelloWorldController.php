@@ -8,6 +8,11 @@ use UserEx\Todo\Core\RedirectResponse;
 
 class HelloWorldController extends Controller
 {
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\RedirectResponse|\UserEx\Todo\Core\Response
+     */
     public function indexAction (Request $request)
     {   
         $router = $this->container['router'];

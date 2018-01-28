@@ -4,10 +4,12 @@ namespace UserEx\Todo\Controllers;
 use UserEx\Todo\Core\Controller;
 use Nette\Http\Request;
 use UserEx\Todo\Core\Response;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use UserEx\Todo\Core\RedirectResponse;
 
+/**
+ * @author ildar
+ *
+ */
 class LoginController extends Controller
 {
     /**
@@ -36,7 +38,7 @@ class LoginController extends Controller
         $router = $this->container['router'];
         
         if ($this->container['user']) {
-            return new RedirectResponse($router->getUrl('todo'));
+            return new RedirectResponse($router->getUrl('todo/*  */'));
         }
         
         $username = $request->getPost('username', null);
@@ -73,6 +75,11 @@ class LoginController extends Controller
         return $response;
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\RedirectResponse
+     */
     public function logoutAction(Request $request) {
         /** @var $auth \UserEx\Todo\Core\AuthentificationService */
         $auth = $this->container['authservice'];

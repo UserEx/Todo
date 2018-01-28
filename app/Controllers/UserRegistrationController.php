@@ -8,8 +8,16 @@ use Doctrine\ORM\EntityManager;
 use UserEx\Todo\Entities\User;
 use UserEx\Todo\Core\RedirectResponse;
 
+/**
+ * @author ildar
+ */
 class UserRegistrationController extends Controller
 {
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\RedirectResponse|\UserEx\Todo\Core\Response
+     */
     public function indexAction (Request $request)
     {
         $router = $this->container['router'];
@@ -21,6 +29,11 @@ class UserRegistrationController extends Controller
         return new Response($this->view('registration.html.twig', array()));
     }
     
+    /**
+     * @param Request $request
+     * 
+     * @return \UserEx\Todo\Core\RedirectResponse|NULL|\UserEx\Todo\Core\Response
+     */
     public function signUpAction (Request $request)
     {
         $router = $this->container['router'];

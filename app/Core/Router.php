@@ -4,15 +4,29 @@ namespace UserEx\Todo\Core;
 use Pimple\Container;
 use Nette\Http\IRequest;
 
+/**
+ * @author ildar
+ */
 class Router 
 {    
+    /**
+     * @var Container
+     */
     protected $container = null;
     
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container) 
     {
         $this->container = $container;
     }
     
+    /**
+     * @param IRequest $request
+     * 
+     * @return string[]|\Pimple\Container[]
+     */
     public function getController(IRequest $request)
     {
         $controller = null;
@@ -31,6 +45,9 @@ class Router
         return array($controller, $action);
     }
     
+    /**
+     * @return \Pimple\Container[]
+     */
     public function getExposedRoutes()
     {
         $exposedRoutes = array();
@@ -45,6 +62,12 @@ class Router
         return $exposedRoutes;
     }
     
+    /**
+     * @param string $routeName
+     * @param boolean $absolute
+     * 
+     * @return string
+     */
     public function getUrl($routeName, $absolute = false)
     {
         $url = $this->container['routes'][$routeName]['path'];

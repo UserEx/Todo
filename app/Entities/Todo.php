@@ -111,7 +111,9 @@ class Todo
         return $this;
     }
     
-    
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return array(
