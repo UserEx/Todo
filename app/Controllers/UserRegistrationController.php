@@ -15,7 +15,7 @@ class UserRegistrationController extends Controller
         $router = $this->container['router'];
         
         if ($this->container['user']) {
-            return new RedirectResponse($router->getUrl('hello_wold'));
+            return new RedirectResponse($router->getUrl('todo'));
         }
         
         return new Response($this->view('registration.html.twig', array()));
@@ -26,7 +26,7 @@ class UserRegistrationController extends Controller
         $router = $this->container['router'];
         
         if ($this->container['user']) {
-            return new RedirectResponse($router->getUrl('hello_wold'));
+            return new RedirectResponse($router->getUrl('todo'));
         }
         
         $username = $request->getPost('username', null);
@@ -70,7 +70,7 @@ class UserRegistrationController extends Controller
                 $auth = $this->container['authservice'];
                 $auth->login($username, $password);
                 
-                $response = new RedirectResponse($router->getUrl('hello_wold'));
+                $response = new RedirectResponse($router->getUrl('todo'));
             }
         }        
         

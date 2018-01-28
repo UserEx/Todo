@@ -1,8 +1,35 @@
-hello_wold:
-    path: /
+hello_world:
+    path: /hello_world
     controller: UserEx\Todo\Controllers\HelloWorldController
     action: indexAction
     method: GET
+
+todo:
+    path: /
+    controller: UserEx\Todo\Controllers\TodoController
+    action: indexAction
+    method: GET
+
+todo_add:
+    path: /ajax/add
+    controller: UserEx\Todo\Controllers\TodoController
+    action: addAction
+    method: POST
+    expose: true
+    
+todo_delete:
+    path: /ajax/delete
+    controller: UserEx\Todo\Controllers\TodoController
+    action: deleteAction
+    method: POST
+    expose: true
+    
+todo_load_list:
+    path: /ajax/load_list
+    controller: UserEx\Todo\Controllers\TodoController
+    action: getListAction
+    method: POST
+    expose: true
     
 registration:
     path: /registration

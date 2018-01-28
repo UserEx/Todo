@@ -90,6 +90,8 @@ class AuthentificationService
     
     public function getUser($token) 
     {
-        return $this->tokenRepository->findOneBy(array('token' => $token));
+        $authToken = $this->tokenRepository->findOneBy(array('token' => $token));
+        
+        return $authToken ? $authToken->getUser() : null;
     }
 }

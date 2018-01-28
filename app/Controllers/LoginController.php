@@ -20,7 +20,7 @@ class LoginController extends Controller
         $router = $this->container['router'];
         
         if ($this->container['user']) {
-            return new RedirectResponse($router->getUrl('hello_wold'));
+            return new RedirectResponse($router->getUrl('todo'));
         }
         
         return new Response($this->view('login.html.twig', array()));
@@ -36,7 +36,7 @@ class LoginController extends Controller
         $router = $this->container['router'];
         
         if ($this->container['user']) {
-            return new RedirectResponse($router->getUrl('hello_wold'));
+            return new RedirectResponse($router->getUrl('todo'));
         }
         
         $username = $request->getPost('username', null);
@@ -62,7 +62,7 @@ class LoginController extends Controller
             if (!$auth->login($username, $password)) {
                 $validMsg[] = 'Неверное имя или пароль';
             } else {                
-                $response = new RedirectResponse($router->getUrl('hello_wold'));
+                $response = new RedirectResponse($router->getUrl('todo'));
             }
         }
         

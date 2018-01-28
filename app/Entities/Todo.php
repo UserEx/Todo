@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User
  *
- * @ORM\Entity()
- * @ORM\Table(name="auth_token")
+ * @ORM\Entity(repositoryClass="UserEx\Todo\Repositories\TodoRepository")
+ * @ORM\Table(name="todo")
  */
-class AuthToken
+class Todo
 {
     /**
      * @var integer
@@ -23,24 +23,24 @@ class AuthToken
     /**
      * @var string
      *
-     * @ORM\Column(name="token", type="string", length=32)
+     * @ORM\Column(name="title", type="string", length=512)
      */
-    private $token = null;
+    private $title = null;
     
     /**
      * User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="UserEx\Todo\Entities\User", fetch="EAGER")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
     
     /**
-     * @var \DateTime
+     * @var boolean
      *
-     * @ORM\Column(name="expires", type="datetime")
+     * @ORM\Column(name="complited", type="boolean")
      */
-    private $expires;
+    private $completed = false;
     
     /**
      * Get id
@@ -54,17 +54,19 @@ class AuthToken
     /**
      * @return string
      */
-    public function getToken()
+    public function getTitle()
     {
-        return $this->token;
+        return $this->title;
     }
-    
+
     /**
-     * @param string $token
+     * @param string $title
+     * 
+     * @return Todo
      */
-    public function setToken($token)
+    public function setTitle($title)
     {
-        $this->token = $token;
+        $this->title = $title;
         
         return $this;
     }
@@ -76,9 +78,11 @@ class AuthToken
     {
         return $this->user;
     }
-    
+
     /**
      * @param mixed $user
+     * 
+     * @return Todo
      */
     public function setUser($user)
     {
@@ -88,22 +92,32 @@ class AuthToken
     }
 
     /**
-     * @return \DateTime
+     * @return boolean
      */
-    public function getExpires()
+    public function isCompleted()
     {
-        return $this->expires;
-        
-        return $this;
+        return $this->completed;
     }
 
     /**
-     * @param \DateTime $expires
+     * @param boolean $completed
+     * 
+     * @return Todo
      */
-    public function setExpires($expires)
+    public function setCompleted($completed)
     {
-        $this->expires = $expires;
+        $this->completed = $completed;
         
         return $this;
+    }
+    
+    
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(), 
+            'title' => $this->getTitle(), 
+            'completed' => $this->isCompleted()
+        );
     }
 }

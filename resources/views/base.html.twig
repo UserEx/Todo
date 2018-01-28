@@ -13,24 +13,35 @@
 		
 		{% block js_init -%}        
             <script src="js/requirejs/require.js"></script>
-            <script>
+            <script type="text/javascript">
                 requirejs.config({
                     baseUrl: 'js/modules'
                 });
+                function getUrl(route) {
+					var routes = { 
+						{% for routeName in exposedRoutes | keys %}
+							'{{ routeName }}': '{{ exposedRoutes[routeName] }}',	
+						{% endfor %}
+					};
+
+					return routes[route];
+                }
             </script>
         {% endblock %}
 	</head>
 	<body>
 		<section class="todoapp">
-    		<header style="text-align: center;">
-        		<h1>todos</h1>
+    		<header class="header">
+        		{% block header %}
+        			<h1>todos</h1>
+        		{% endblock %}
         	</header>	
     		{% block content %}		{% endblock %}
 		</section>
 		<footer class="info">
 			{% block footer %}
 				{% if user is not null %}
-					<b> <a href="{{ path('logout') }}" style="font-size: 14px;">logout</a> </b>
+					<b> <a href="{{ path('logout') }}" style="font-size: 14px;">Sign out</a> </b>
 				{% endif %}
     			<p>Double-click to edit a todo</p>
     			<!-- Change this out with your name and url ↓ -->

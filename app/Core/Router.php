@@ -31,6 +31,20 @@ class Router
         return array($controller, $action);
     }
     
+    public function getExposedRoutes()
+    {
+        $exposedRoutes = array();
+        
+        foreach ($this->container['routes'] as $routeName => $route)
+        {
+            if (key_exists('expose', $route) && $route['expose']) {
+                $exposedRoutes[$routeName] = $route['path'];
+            }
+        }
+        
+        return $exposedRoutes;
+    }
+    
     public function getUrl($routeName, $absolute = false)
     {
         $url = $this->container['routes'][$routeName]['path'];

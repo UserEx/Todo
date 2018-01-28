@@ -6,6 +6,7 @@ module.exports = function(grunt) {
         root: 'web',
         requirejs: '<%= config.root %>/js/requirejs',
         modules_js: '<%= config.root %>/js/modules',
+        app_js: '<%= config.root %>/js',
         css: '<%= config.root %>/css',
         fonts: '<%= config.root %>/fonts',
       },
@@ -25,12 +26,15 @@ module.exports = function(grunt) {
                   cwd: 'node_modules/jquery/dist',
                   src: ['jquery.js'],
                   dest: '<%= config.modules_js %>'
-              }/*,{
+              }]
+          }, 
+          app_js: {
+        	  files: [{
                   expand: true,
-                  cwd: 'resources/public/js/',
-                  src: ['main_menu.js'],
-                  dest: '<%= config.modules_js %>'
-              }*/]
+                  cwd: 'resources/public/js',
+                  src: ['*.js'],
+                  dest: '<%= config.app_js %>'
+              }]
           },
           css: {
         	  files :[{
@@ -60,7 +64,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-exec');
   
-  grunt.registerTask('dev_js', ['copy:requirejs', 'copy:modules_js']);
+  grunt.registerTask('dev_js', ['copy:requirejs', 'copy:modules_js', 'copy:app_js']);
   grunt.registerTask('dev_css', ['exec:todomvc-app-template', 'copy:css']);
   
   grunt.registerTask('dev', ['dev_js', 'dev_css']);
